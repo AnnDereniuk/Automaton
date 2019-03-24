@@ -1,56 +1,58 @@
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
-public class State {
-
+public class State
+{
     public int state;
-    public boolean isFinal;
-    public boolean isFirst;
+    public ArrayList<State> prevstate= new ArrayList<>();
+    public ArrayList<State> nextstate=new ArrayList<>();
+    public ArrayList <Transition> transitionsToThis= new ArrayList<>();
+    public boolean isfinal;
+    public boolean isfirst;
     public int check;
-    public ArrayList<State> previousState = new ArrayList();
-    public ArrayList<State> nextState = new ArrayList();
-    public ArrayList<Transition> transitionToThis = new ArrayList();
 
-    public State (int num){
-        this.state = num;
-        this.isFirst= false;
-        this.check=0;
+    public State(int num)
+    {
+        state=num;
+        isfirst=false;
+        check=0;
+
     }
-
-    public boolean isTerminate(){
-        return this.isFinal;
+    public void SetFirst()
+    {
+        isfirst=true;
     }
-
-    public void setFirst() {
-        this.isFirst=true;
+    public void SetFinal(boolean fin)
+    {
+        isfinal=fin;
     }
-
-    public void setFinal(boolean theFinal){
-        this.isFinal=theFinal;
+    public void addPrev(State prev)
+    {
+        prevstate.add(prev);
+        prevstate.sort(Comparator.comparingInt(State::GetState).reversed());
     }
-
-    public int getState (){
-        return this.state;
+    public void addNext(State next)
+    {
+        nextstate.add(next);
+        nextstate.sort(Comparator.comparingInt(State::GetState));
     }
-
-    public void addPrevious (State previous){
-        this.previousState.add(previous);
-        this.previousState.sort(Comparator.comparingInt(State::getState).reversed());
+    public void addTranstothis(Transition tr)
+    {
+        transitionsToThis.add(tr);
+        transitionsToThis.sort(Comparator.comparingInt(Transition::getFrom).reversed());
     }
-
-    public void addNext(State theNext){
-        this.nextState.add(theNext);
-        this.nextState.sort(Comparator.comparingInt(State::getState));
+    public int GetState()
+    {
+        return state;
     }
-
-    public void setCheck(int check){
-        this.check=check;
+    public void setCheck(int c)
+    {
+        check=c;
     }
-
-
-    public void addTransitionToThis(Transition transition) {
-        this.transitionToThis.add(transition);
-        this.transitionToThis.sort(Comparator.comparingInt(Transition::getFrom).reversed());
+    public boolean isterminate()
+    {
+        return isfinal;
     }
 
 }
